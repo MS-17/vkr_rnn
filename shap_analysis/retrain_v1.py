@@ -57,25 +57,30 @@ print(f"Test data shape x: {X_test.shape}, y: {y_test.shape}")
 input_shape = X_train.shape[1:]
 
 model = Sequential()
-# model.add(tf.keras.layers.LSTM(32, input_shape=input_shape, return_sequences=True))
-# model.add(tf.keras.layers.LSTM(64))
 
-model.add(tf.keras.layers.LSTM(16, input_shape=input_shape, return_sequences=True))
-for i in range(3):
-  model.add(tf.keras.layers.LSTM(16, return_sequences=True))
+model.add(tf.keras.layers.LSTM(32, input_shape=input_shape, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
+model.add(tf.keras.layers.LSTM(32, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
+model.add(tf.keras.layers.LSTM(32, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
+
 model.add(tf.keras.layers.Flatten())
-model.add(Dense(256, activation="relu", bias_regularizer=rg.l2(0.01)))
+
+model.add(Dense(8, activation="relu", bias_regularizer=rg.l2(0.01)))
+model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.keras.layers.Dropout(0.2))
+
+model.add(Dense(8, activation="relu", bias_regularizer=rg.l2(0.01)))
+model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.keras.layers.Dropout(0.2))
 
 model.add(Dense(1, activation="sigmoid"))
 model.compile(
-    # optimizer=tf.train.AdamOptimizer(learning_rate=0.01),
-    optimizer=tf.compat.v1.train.AdamOptimizer(learning_rate=0.01),
+    optimizer=tf.compat.v1.train.AdamOptimizer(learning_rate=0.001),
     loss="binary_crossentropy",
     metrics=["accuracy",] #, tf.compat.v1.metrics.auc()] #, "precision", "recall"])
 )
 model.summary()
 callback_ = tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=3, mode="min") #, start_from_epoch=3)
-model.fit(X_train, y_train, batch_size=64, validation_split=0.2, epochs=100, callbacks=[callback_])
+model.fit(X_train, y_train, batch_size=32, validation_split=0.2, epochs=100, callbacks=[callback_])
 
 print("\nModel evaluate")
 print(model.evaluate(X_test, y_test))

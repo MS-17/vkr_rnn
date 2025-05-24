@@ -48,11 +48,6 @@ print(f"Train data shape x: {X_train.shape}") #, y: {y_train.shape}")
 
 cols = test_data["ordered_test_columns"]
 print("Dataset columns:", cols)
-# cols = [
-#     "apcp_mean", "rh_mean", "t_mean", "wind_speed_mean", "wind_dir_std", "aspect",
-#     "elevation", "slope", "locality_dist", "river_dist", "road_dist",
-#     "soilw10_mean", "vegetation_type",
-# ]
 
 model_path = "saved_model/model.h5"
 model = tf.keras.models.load_model(model_path)
@@ -96,16 +91,16 @@ plt.close()
 
 
 # shap summary
-print("Creating the shap summary plot")
-row_ = 5
-shap.summary_plot(shap_val[0][:, row_, :], X_test[:shap_samples, row_, :], 
-    feature_names=cols, max_display=20,
-    # plot_size=(8, 6),
-    show=False,
-)
-ax = plt.gca()
-scale_ = 8
-ax.set_xlim(-scale_ * 1e-5, scale_ * 1e-5)
-print("Saving the shap summary plot at", shap_plots_path + "summary_plot.png")
-ax.figure.savefig(shap_plots_path + "summary_plot.png", dpi=150)
-plt.close()
+# print("Creating the shap summary plot")
+# row_ = 5
+# shap.summary_plot(shap_val[0][:, row_, :], X_test[:shap_samples, row_, :], 
+#     feature_names=cols, max_display=20,
+#     # plot_size=(8, 6),
+#     show=False,
+# )
+# ax = plt.gca()
+# scale_ = 8
+# ax.set_xlim(-scale_ * 1e-5, scale_ * 1e-5)
+# print("Saving the shap summary plot at", shap_plots_path + "summary_plot.png")
+# ax.figure.savefig(shap_plots_path + "summary_plot.png", dpi=150)
+# plt.close()
