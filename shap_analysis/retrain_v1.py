@@ -7,17 +7,10 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import regularizers as rg
 
 import numpy as np
-# import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, roc_curve
-# from sklearn.model_selection import train_test_split
-# import scipy.stats as st
-# import scipy
-
-# from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 import plotly.graph_objs as go
 
@@ -28,6 +21,7 @@ assert tf.__version__ == '1.14.0'
 assert sys.version_info[0] == 3 and sys.version_info[1] == 7
 #assert google.protobuf.__version__ == '3.20.0'
 #assert h5py.__version__ == '2.10.0'
+
 
 data_path = "data/"
 train_data_path = data_path + "train_ds.json"
@@ -60,8 +54,7 @@ model = Sequential()
 
 model.add(tf.keras.layers.LSTM(32, input_shape=input_shape, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
 for i in range(2):
-  model.add(tf.keras.layers.LSTM(32, return_sequences=True))
-# model.add(tf.keras.layers.LSTM(32, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
+  model.add(tf.keras.layers.LSTM(32, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
 
 model.add(tf.keras.layers.Flatten())
 
