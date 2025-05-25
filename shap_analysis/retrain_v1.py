@@ -59,18 +59,16 @@ input_shape = X_train.shape[1:]
 model = Sequential()
 
 model.add(tf.keras.layers.LSTM(32, input_shape=input_shape, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
-model.add(tf.keras.layers.LSTM(32, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
-model.add(tf.keras.layers.LSTM(32, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
+for i in range(2):
+  model.add(tf.keras.layers.LSTM(32, return_sequences=True))
+# model.add(tf.keras.layers.LSTM(32, return_sequences=True, bias_regularizer=rg.l1_l2(l1=0, l2=0.01)))
 
 model.add(tf.keras.layers.Flatten())
 
-model.add(Dense(8, activation="relu", bias_regularizer=rg.l2(0.01)))
-model.add(tf.keras.layers.BatchNormalization())
-model.add(tf.keras.layers.Dropout(0.2))
-
-model.add(Dense(8, activation="relu", bias_regularizer=rg.l2(0.01)))
-model.add(tf.keras.layers.BatchNormalization())
-model.add(tf.keras.layers.Dropout(0.2))
+for i in range(2):
+  model.add(Dense(8, activation="relu", bias_regularizer=rg.l2(0.01)))
+  model.add(tf.keras.layers.BatchNormalization())
+  model.add(tf.keras.layers.Dropout(0.2))
 
 model.add(Dense(1, activation="sigmoid"))
 model.compile(
